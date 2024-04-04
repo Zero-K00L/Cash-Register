@@ -34,7 +34,7 @@ main {
 }
 
 #change-due {
-
+    
 }
 
 #input-container {
@@ -93,10 +93,13 @@ main {
 
 #register-body {
     background-color: var(--registerColor);
-    height: 300px;
+    height: 256px;
     width: 320px;
     border-top-left-radius: 35px;
     border-top-right-radius: 35px;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
 }
 
 #register-black-squares-container {
@@ -122,6 +125,40 @@ main {
 #register-change {
     background-color: white;
     color: black;
-    width: 100px;
-    height: 100px;
+    width: 175px;
+    height: 220px;
+    margin-right: 20px;
+    margin-top: 20px;
+}
+
+#change-list-header {
+    font-weight: 600;
+    padding: 0;
+    text-align: center;
+    list-style-type: none;
+    font-size: 17px;
+    margin-bottom: 2px
+}
+
+.change-item {
+    font-weight: 400;
+    position: relative;
+    right: 17px;
+}
+
+#register-drawer {
+    margin-top: 10px;
+    background-color: var(--registerColor);
+    width: 320px;
+    height: 50px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#drawer-knob {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+    border-radius: 50%;
 }
