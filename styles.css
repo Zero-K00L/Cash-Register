@@ -4,6 +4,7 @@
     --buttonColorBackground: #feac32;
     --buttonGradientColor1:  #fecc4c;
     --buttonGradientColor2: #ffac33;
+    --registerColor: #8fccf2;
 }
 
 html {
@@ -41,7 +42,7 @@ main {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
-    height: 250px;
+    height: 200px;
 }
 
 #input-label {
@@ -49,7 +50,8 @@ main {
 }
 
 #cash {
-    height: 30px;
+    height: 35px;
+    width: 215px;
 }
 
 #purchase-btn {
@@ -60,4 +62,66 @@ main {
     border-color: var(--buttonColorBackground);
     cursor: pointer;
     font-weight: 600;
+    font-size: 20px;
+}
+
+#register {
+    width: 22%;
+}
+
+#price-container {
+    width: 60%;
+    border: 10px solid var(--registerColor);
+    height: 50px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 40px;
+}
+
+#price {
+    font-size: 20px;
+}
+
+#register-arm {
+    background-color: var(--registerColor);
+    width: 40px;
+    height: 30px;
+    margin-left: 60px;
+}
+
+#register-body {
+    background-color: var(--registerColor);
+    height: 300px;
+    width: 320px;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+}
+
+#register-black-squares-container {
+    height: 80px;
+    width: 80px;
+    border: 1px solid transparent;
+    position: relative;
+    top: 20px;
+    left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.black-square {
+    background-color: black;
+    width: 20px;
+    height: 20px;
+}
+
+#register-change {
+    background-color: white;
+    color: black;
+    width: 100px;
+    height: 100px;
 }
