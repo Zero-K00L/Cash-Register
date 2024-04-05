@@ -134,16 +134,14 @@ main {
 #change-list-header {
     font-weight: 600;
     padding: 0;
-    text-align: center;
     list-style-type: none;
     font-size: 17px;
-    margin-bottom: 2px
+    margin-bottom: 2px;
+    margin-left: 12px;
 }
 
 .change-item {
     font-weight: 400;
-    position: relative;
-    right: 17px;
 }
 
 #register-drawer {
