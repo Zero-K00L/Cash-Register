@@ -66,8 +66,6 @@ const totalCid = () => {
 };
 
 
-
-
 const CalculateChange = () => {
   let userCash = Number(userInput.value);
   let cidList = cid.reverse();
@@ -93,10 +91,12 @@ const CalculateChange = () => {
     let amountOwed = userCash - price;
     cidList.forEach((el, index) => {
       while(amountOwed > 0){
-        if(el[1] > 0 && !(amountOwed - denominations[index] < 0)) {
+        if(el[1] > 0 && !(Number(amountOwed.toFixed(2)) - denominations[index] < 0)) {
           amountOwed -= denominations[index];
           el[1] -= denominations[index];
           changeDue.push(denominations[index]);
+          Number(amountOwed.toFixed(2));
+          cidList[el] -= denominations[index];
         }
         else {
           console.log('else condition');
@@ -104,9 +104,10 @@ const CalculateChange = () => {
         }
       }
     });
-    console.log(amountOwed);
-    console.log(changeDue);
-    console.log(cidList);
+    cidDisplay(cidList.reverse());
+    console.log('This is the amountOwed', amountOwed.toFixed(2));
+    console.log('This is the changeDue array',changeDue);
+    console.log('This is the cidList array',cidList);
     return amountOwed;  
   };
 
@@ -119,30 +120,3 @@ test.addEventListener('click', CalculateChange);
 
 
 
-
-
-/* else {
-  let amountOwed = userCash - price;
-  cidList.forEach((el, index) => {  
-    while(amountOwed > 0) {
-      if(el[1] > 0 && !(amountOwed - el[1] < 0 )) {
-        amountOwed -= denominations[index];
-        el[1] -= denominations[index];
-        changeDue.push(denominations[index]);
-      }
-      else {
-        console.log('else condition');
-        return;
-      }
-    }
-
-  });
-
-  console.log('this is the amount owed', amountOwed);
-  console.log('this is the changeDue array',changeDue);
-  console.log('sum of changeDue array', changeDue.reduce((a,b) => a + b, 0));
-  console.log('this is the cid Array', cidList);
-  return changeDue;  
-
-};  
- */
