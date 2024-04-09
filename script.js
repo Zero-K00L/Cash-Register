@@ -7,6 +7,7 @@ const test = document.getElementById('test');
 
 const changeSpans = document.querySelectorAll('.change-amount');
 
+changeDue.textContent = '';
 
 let price = 1.87;
 let cid = [
@@ -37,7 +38,7 @@ const updateCid = () => {
 const cidDisplay = () => {
   cid.forEach((el, index) => {
     const changeSpan = changeSpans[index];
-    changeSpan.textContent = ` $${el[1]}`;
+    changeSpan.textContent = ` $${Number(el[1].toFixed(2))}`;
   });
   return;
 };
@@ -70,10 +71,11 @@ const CalculateChange = () => {
   let userCash = Number(userInput.value);
   let cidList = cid.reverse();
   let totalCidInDrawer = totalCid();
-  let changeDue = [];
+  let changeDueArr = [];
   const price = 1.87;
   if(userCash === price) {
-    /* changeDue.push('No change due - customer paid with exact cash'); */
+    changeDueArr.push('No change due - customer paid with exact cash');
+    displayStatus(changeDueArr);
     console.log('No change due - customer paid with exact cash');
     return;
   }
@@ -82,7 +84,8 @@ const CalculateChange = () => {
     return;
   }
   else if(userCash > totalCidInDrawer) {
-    /* changeDue.push('Status: INSUFFICIENT_FUNDS'); */
+    changeDueArr.push('Status: INSUFFICIENT_FUNDS');
+    displayStatus(changeDueArr);
     console.log('Status: INSUFFICIENT_FUNDS');
     return;
   }
@@ -94,8 +97,7 @@ const CalculateChange = () => {
         if(el[1] > 0 && !(Number(amountOwed.toFixed(2)) - denominations[index] < 0)) {
           amountOwed -= denominations[index];
           el[1] -= denominations[index];
-          changeDue.push(denominations[index]);
-          Number(amountOwed.toFixed(2));
+          changeDueArr.push(denominations[index]);
           cidList[el] -= denominations[index];
         }
         else {
@@ -105,16 +107,27 @@ const CalculateChange = () => {
       }
     });
     cidDisplay(cidList.reverse());
+    displayStatus(changeDueArr);
     console.log('This is the amountOwed', amountOwed.toFixed(2));
-    console.log('This is the changeDue array',changeDue);
+    console.log('This is the changeDue array',changeDueArr);
     console.log('This is the cidList array',cidList);
-    return amountOwed;  
+    return changeDueArr;  
   };
 
 };
 
 
-test.addEventListener('click', CalculateChange);
+
+const displayStatus = (arr) => {
+  arr.forEach((el, index) => {
+    changeDue.textContent += ;
+
+  });
+  return;
+};
+
+
+purchaseBtn.addEventListener('click', CalculateChange);
 
 
 
