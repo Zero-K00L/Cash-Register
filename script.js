@@ -74,9 +74,9 @@ const CalculateChange = () => {
   let changeDueArr = [];
   const price = 1.87;
   if(userCash === price) {
-    changeDueArr.push('No change due - customer paid with exact cash');
-    displayStatus(changeDueArr);
-    console.log('No change due - customer paid with exact cash');
+    const changeStatus = 'No change due - customer paid with exact cash'
+    console.log(changeStatus);
+    changeDue.textContent = changeStatus;
     return;
   }
   else if(userCash < price) {
@@ -84,9 +84,9 @@ const CalculateChange = () => {
     return;
   }
   else if(userCash > totalCidInDrawer) {
-    changeDueArr.push('Status: INSUFFICIENT_FUNDS');
-    displayStatus(changeDueArr);
+    const changeStatus = 'Status: INSUFFICIENT_FUNDS';
     console.log('Status: INSUFFICIENT_FUNDS');
+    changeDue.textContent = changeStatus;
     return;
   }
 
@@ -106,8 +106,15 @@ const CalculateChange = () => {
         }
       }
     });
+    if(amountOwed === totalCidInDrawer) {
+      changeDue.textContent = "Status: CLOSED";
+      
+    }
+    else {
+      changeDue.textContent = "Status: OPEN";
+    }
     cidDisplay(cidList.reverse());
-    displayStatus(changeDueArr);
+    /* displayChangeForCustomer(changeDueArr); */
     console.log('This is the amountOwed', amountOwed.toFixed(2));
     console.log('This is the changeDue array',changeDueArr);
     console.log('This is the cidList array',cidList);
@@ -118,10 +125,11 @@ const CalculateChange = () => {
 
 
 
-const displayStatus = (arr) => {
-  arr.forEach((el, index) => {
-    changeDue.textContent += ;
+const displayChangeForCustomer = (arr) => {
+  let cidList = cid.reverse();
 
+  arr.forEach((el, index) => {
+    changeDue.textContent += `${cidList[index]}: $${el}\n`;
   });
   return;
 };
