@@ -4,9 +4,7 @@ const purchaseBtn = document.getElementById('purchase-btn');
 const total = document.getElementById('price');
 const changeDrawer = document.getElementById('change-list-header');
 const test = document.getElementById('test');
-
 const changeSpans = document.querySelectorAll('.change-amount');
-
 changeDue.textContent = '';
 
 let price = 1.87;
@@ -22,6 +20,7 @@ let cid = [
   ["ONE HUNDRED", 100]
 ];
 
+// A reversed copy of the cid array that will not be modified and used for comparison purposes
 const cidCopy = [
   ["PENNY", 1.01],
   ["NICKEL", 2.05],
@@ -34,31 +33,10 @@ const cidCopy = [
   ["ONE HUNDRED", 100]
 ].reverse();
 
-/* let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01]; */
+// The cash value associated with each denomination of money found in the drawer, used for calculations
 let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01];
 
-/* let denominationsSum = {
-  100: 0,
-  20: 0,
-  10: 0,
-  5: 0,
-  1: 0,
-  0.25: 0,
-  0.1: 0,
-  0.05: 0,
-  0.01: 0
-}; */
-
-const updateCid = () => {
-  cid.forEach((el, index) => {
-    while (el[1] > 0) {
-      el[1] -= denominations[index];
-    }
-  });
-  console.log(cid);
-  return cid;
-};
-
+// Displays the cash in drawer(cid) to the user by updating the HTML content to reflect the cid.
 const cidDisplay = () => {
   cid.forEach((el, index) => {
     const changeSpan = changeSpans[index];
@@ -68,12 +46,13 @@ const cidDisplay = () => {
 };
 document.addEventListener('DOMContentLoaded', cidDisplay);
 
-
+// This displays the price of the item defined in the JS and shows it to the user in the HTML.
 const priceDisplay = () => {
   total.textContent = `Total: $${price}`;
 };
 document.addEventListener('DOMContentLoaded', priceDisplay);
 
+// creates a list of just cash numerical values from cid to be used for summing the total in totalCid()
 const listOfCid = () => {
   let listOfCash = [];
   cid.forEach((el) => {
@@ -83,6 +62,7 @@ const listOfCid = () => {
   return listOfCash;
 };
 
+// Sums up all available cash in the drawer into one number for comparison purposes
 const totalCid = () => {
   let totalCashArray = listOfCid();
   let sumOfCash = totalCashArray.reduce((a, b) => a + b, 0);
@@ -90,7 +70,9 @@ const totalCid = () => {
   return Math.floor(sumOfCash);
 };
 
-
+// Calculates the change returned to the customer based on the cash they pay with and the price of the
+// price of the item. Different messages are used to display different outcomes to the user based on price of
+// product, cash available in the drawer(cid) and the amount the user chooses to pay with.
 const CalculateChange = () => {
   let userCash = Number(userInput.value);
   let cidList = [...cid].reverse();
@@ -143,21 +125,16 @@ const CalculateChange = () => {
     console.log('This is the cidList array',cidList);
     return;  
   };
-
 };
-
-
 
 purchaseBtn.addEventListener('click', CalculateChange);
 
-
-
-
+// Updates the HTML to display the change returned to the customer
 const displayChangeForCustomer = (arr) => {
   arr.forEach((el, index) => {
-    if(el[1] !== cidCopy[index]) {
+    if(el[1] !== cidCopy[index][1]) {
       let result = cidCopy[index][1] - el[1]
-      changeDue.innerHTML += `<br>${el[0]}: $${result}`
+      changeDue.innerHTML += `<br>${el[0]}: $${Number(result.toFixed(2))}`
     };
   });
   return;
