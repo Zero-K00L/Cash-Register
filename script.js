@@ -22,6 +22,17 @@ let cid = [
   ["ONE HUNDRED", 100]
 ];
 
+const cidCopy = [
+  ["PENNY", 1.01],
+  ["NICKEL", 2.05],
+  ["DIME", 3.1],
+  ["QUARTER", 4.25],
+  ["ONE", 90],
+  ["FIVE", 55],
+  ["TEN", 20],
+  ["TWENTY", 60],
+  ["ONE HUNDRED", 100]
+].reverse();
 
 /* let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01]; */
 let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01];
@@ -82,7 +93,7 @@ const totalCid = () => {
 
 const CalculateChange = () => {
   let userCash = Number(userInput.value);
-  let cidList = cid.reverse();
+  let cidList = [...cid].reverse();
   let totalCidInDrawer = totalCid();
   let changeDueArr = [];
   const price = 1.87;
@@ -125,7 +136,7 @@ const CalculateChange = () => {
     else {
       changeDue.textContent = "Status: OPEN";
     }
-    cidDisplay(cidList.reverse());
+    cidDisplay(cidList);
     displayChangeForCustomer(cidList);
     console.log('This is the amountOwed', amountOwed.toFixed(2));
     console.log('This is the changeDue array',changeDueArr);
@@ -143,12 +154,16 @@ purchaseBtn.addEventListener('click', CalculateChange);
 
 
 const displayChangeForCustomer = (arr) => {
-  const cidReversed = cid.reverse();
   arr.forEach((el, index) => {
-    if(el[1] !== cidReversed[index]) {
-      console.log('this is cidReversed Index', cidReversed[index])
-      changeDue.innerHTML += `<br>${el[0]}: $${el[1]}`
+    if(el[1] !== cidCopy[index]) {
+      let result = cidCopy[index][1] - el[1]
+      changeDue.innerHTML += `<br>${el[0]}: $${result}`
     };
   });
   return;
 };
+
+test.addEventListener('click', () =>{
+  console.log(cid.reverse());
+  console.log(cidCopy);
+})
