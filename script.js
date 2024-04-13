@@ -88,23 +88,22 @@ const priceDisplay = () => {
 document.addEventListener('DOMContentLoaded', priceDisplay);
 
 // creates a list of just cash numerical values from cid to be used for summing the total in totalCid()
-const listOfCid = () => {
+/* const listOfCid = () => {
   let listOfCash = [];
-  cid.forEach((el) => {
+  arr.forEach((el) => {
     listOfCash.push(el[1]);    
   });
-  /* console.log(listOfCash); */
+  console.log(listOfCash);
   return listOfCash;
-};
+}; */
 
 // Sums up all available cash in the drawer into one number for comparison purposes
-const totalCid = () => {
-  let totalCashArray = listOfCid();
-  let sumOfCash = totalCashArray.reduce((a, b) => a + b, 0);
+const totalCid = (arr) => {
+  let sumOfCash = arr.reduce((acc, el) => acc + el[1], 0);
   Number(sumOfCash.toFixed(2));
-  console.log('new total cid',sumOfCash)
   return sumOfCash;
 };
+totalCid(cid);
 
 // Calculates the change returned to the customer based on the cash they pay with and the price of the
 // price of the item. Different messages are used to display different outcomes to the user based on price of
@@ -112,7 +111,7 @@ const totalCid = () => {
 const CalculateChange = () => {
   let userCash = Number(userInput.value);
   let cidList = [...cid].reverse();
-  let totalCidInDrawer = totalCid();
+  let totalCidInDrawer = totalCid(cid);
   let changeDueArr = [];
   let amountOwed = userCash - price;
 
@@ -150,11 +149,11 @@ const CalculateChange = () => {
         }
         else {
           console.log('else condition');
-          
           return;
         }
       }
     });
+    
     if(amountOwed === totalCidInDrawer || totalCidInDrawer === 0) {
       changeDue.textContent = "Status: CLOSED";
     }
@@ -168,7 +167,7 @@ const CalculateChange = () => {
     console.log('This is the changeDue array',changeDueArr);
     console.log('This is the cidList array',cidList);
     console.log('this is the total cid in drawer at the very end', totalCidInDrawer);
-    console.log('this is the cid Change arr for testing', cidChangeArr);
+    /* console.log('this is the cid Change arr for testing', cidChangeArr); */
     return;  
   };
 };
