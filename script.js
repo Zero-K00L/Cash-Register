@@ -58,6 +58,19 @@ const cidCopy = [
 // The cash value associated with each denomination of money found in the drawer, used for calculations
 let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01];
 
+let cidChangeArr = [
+  ["PENNY", 0],
+  ["NICKEL", 0],
+  ["DIME", 0],
+  ["QUARTER", 0],
+  ["ONE", 0],
+  ["FIVE", 0],
+  ["TEN", 0],
+  ["TWENTY", 0],
+  ["ONE HUNDRED", 0]
+].reverse();
+
+
 // Displays the cash in drawer(cid) to the user by updating the HTML content to reflect the cid.
 const cidDisplay = () => {
   cid.forEach((el, index) => {
@@ -133,10 +146,11 @@ const CalculateChange = () => {
           /* console.log("el[1] ",el[1], '-=', 'denominations[index]', denominations[index]); */
           el[1] -= denominations[index];
           changeDueArr.push(denominations[index]);
-          /* cidList[el] -= denominations[index]; */
+          cidChangeArr[index][1] += denominations[index];
         }
         else {
           console.log('else condition');
+          
           return;
         }
       }
@@ -146,12 +160,15 @@ const CalculateChange = () => {
     }
     else {
       changeDue.textContent = "Status: OPEN";
+      console.log('this is the totalCid in drawer in the else clause',totalCidInDrawer)
     }
     cidDisplay(cidList);
-    displayChangeForCustomer(cidList);
+    displayChangeForCustomer(cidChangeArr);
     console.log('This is the amountOwed', amountOwed.toFixed(2));
     console.log('This is the changeDue array',changeDueArr);
     console.log('This is the cidList array',cidList);
+    console.log('this is the total cid in drawer at the very end', totalCidInDrawer);
+    console.log('this is the cid Change arr for testing', cidChangeArr);
     return;  
   };
 };
@@ -160,13 +177,10 @@ purchaseBtn.addEventListener('click', CalculateChange);
 
 // Updates the HTML to display the change returned to the customer
 const displayChangeForCustomer = (arr) => {
-  let totalCidInDrawer = totalCid();
-  arr.forEach((el, index) => {
-    if(el[1] !== cidCopy[index][1] && el[1] !== 0) {
-      let result = cidCopy[index][1] - el[1];
-      console.log('this is el[1]',el[1]);
-      console.log('this is the result', result);
-      changeDue.innerHTML += `<br>${el[0]}: $${Number(result.toFixed(2))}`;
+
+  arr.forEach((el) => {
+    if(el[1] !== 0) {
+      changeDue.innerHTML += `<br>${el[0]}: $${Number(el[1].toFixed(2))}`;
     }
   });
   return;
@@ -178,3 +192,20 @@ test.addEventListener('click', () =>{
   let problem = 19.5 % 0.05;
   console.log(problem);
 })
+
+
+
+
+
+
+
+/* const displayChangeForCustomer = (arr) => {
+  let totalCidInDrawer = totalCid();
+  arr.forEach((el, index) => {
+    if(el[1] !== cidCopy[index][1]) {
+      let result = cidCopy[index][1] - el[1];
+      changeDue.innerHTML += `<br>${el[0]}: $${Number(result.toFixed(2))}`;
+    }
+  });
+  return;
+}; */
