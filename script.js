@@ -8,7 +8,7 @@ const changeSpans = document.querySelectorAll('.change-amount');
 changeDue.textContent = '';
 
 //testing purpose CID and price
-let price = 19.5;
+/* let price = 19.5;
 let cid = [
   ["PENNY", .50],
   ["NICKEL", 0],
@@ -19,7 +19,7 @@ let cid = [
   ["TEN", 0],
   ["TWENTY", 0],
   ["ONE HUNDRED", 0]
-];
+]; */
 
 
 
@@ -29,7 +29,7 @@ let cid = [
 
 
 
-/* let price = 1.87;
+let price = 1.87;
 let cid = [
   ["PENNY", 1.01],
   ["NICKEL", 2.05],
@@ -40,7 +40,7 @@ let cid = [
   ["TEN", 20],
   ["TWENTY", 60],
   ["ONE HUNDRED", 100]
-]; */
+];
 
 // A reversed copy of the cid array that will not be modified and used for comparison purposes
 const cidCopy = [
@@ -114,6 +114,7 @@ const CalculateChange = () => {
   let totalCidInDrawer = totalCid(cid);
   let changeDueArr = [];
   let amountOwed = userCash - price;
+  const amountOwedCopy = amountOwed;
 
   if(userCash === price) {
     const changeStatus = 'No change due - customer paid with exact cash'
@@ -134,6 +135,7 @@ const CalculateChange = () => {
     return;
   }
 
+  
   else {
     cidList.forEach((el, index) => {
       while(amountOwed > 0){
@@ -154,7 +156,7 @@ const CalculateChange = () => {
       }
     });
     
-    if(amountOwed === totalCidInDrawer || totalCidInDrawer === 0) {
+    if(amountOwedCopy === totalCidInDrawer || totalCidInDrawer === 0) {
       changeDue.textContent = "Status: CLOSED";
     }
     else {
