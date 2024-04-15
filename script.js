@@ -4,119 +4,157 @@ const purchaseBtn = document.getElementById('purchase-btn');
 const total = document.getElementById('price');
 const changeDrawer = document.getElementById('change-list-header');
 const test = document.getElementById('test');
-
 const changeSpans = document.querySelectorAll('.change-amount');
+changeDue.innerHTML = '';
 
-
-let price = 1.87;
+// The price of items and array of cash in the drawer, declared with let so they can be changed for testing and
+// Different scenarios
+let price = 19.5;
 let cid = [
-  ["PENNY", 1.01],
-  ["NICKEL", 2.05],
-  ["DIME", 3.1],
-  ["QUARTER", 4.25],
-  ["ONE", 90],
-  ["FIVE", 55],
-  ["TEN", 20],
-  ["TWENTY", 60],
-  ["ONE HUNDRED", 100]
+  ["PENNY", 0.01],
+  ["NICKEL", 0],
+  ["DIME", 0],
+  ["QUARTER", 0],
+  ["ONE", 1],
+  ["FIVE", 0],
+  ["TEN", 0],
+  ["TWENTY", 0],
+  ["ONE HUNDRED", 0]
 ];
 
-/* let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01]; */
+// The cash value associated with each denomination of money found in the drawer, used for calculations
 let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01];
+// Array created to keep track of the change needed for each denomination without mutating the orignal cid array
+let cidChangeArr = [
+  ["PENNY", 0],
+  ["NICKEL", 0],
+  ["DIME", 0],
+  ["QUARTER", 0],
+  ["ONE", 0],
+  ["FIVE", 0],
+  ["TEN", 0],
+  ["TWENTY", 0],
+  ["ONE HUNDRED", 0]
+].reverse();
 
-const updateCid = () => {
-  cid.forEach((el, index) => {
-    while (el[1] > 0) {
-      el[1] -= denominations[index];
-    }
+// Resets the cid change array so the change displayed to the customer updates properly each time
+const cidChangeArrReset = () => {
+  cidChangeArr.forEach((el)=> {
+    el[1] = 0;
   });
-  console.log(cid);
-  return cid;
+  return;
 };
 
+// Displays the cash in drawer(cid) to the user by updating the HTML content to reflect the cid.
 const cidDisplay = () => {
   cid.forEach((el, index) => {
     const changeSpan = changeSpans[index];
-    changeSpan.textContent = ` $${el[1]}`;
+    changeSpan.textContent = ` $${Number(el[1].toFixed(2))}`;
   });
   return;
 };
 document.addEventListener('DOMContentLoaded', cidDisplay);
 
-
+// This displays the price of the item defined in the JS and shows it to the user in the HTML.
 const priceDisplay = () => {
   total.textContent = `Total: $${price}`;
 };
 document.addEventListener('DOMContentLoaded', priceDisplay);
 
-const listOfCid = () => {
-  let listOfCash = [];
-  cid.forEach((el) => {
-    listOfCash.push(el[1]);    
-  });
-  /* console.log(listOfCash); */
-  return listOfCash;
+// Sums up all available cash in the drawer into one number for comparison purposes
+const totalCid = (arr) => {
+  let sumOfCash = arr.reduce((acc, el) => acc + el[1], 0);
+  Number(sumOfCash.toFixed(2));
+  return sumOfCash;
 };
+totalCid(cid);
 
-const totalCid = () => {
-  let totalCashArray = listOfCid();
-  let sumOfCash = totalCashArray.reduce((a, b) => a + b, 0);
-  /* console.log(sumOfCash); */
-  return Math.floor(sumOfCash);
-};
+// Function used to see if exact change can be made with current available denominations in the cid array
+const exactChangePresent = () => {
+  let userCash = Number(userInput.value);
+  let amountOwedCopy = userCash - price;
+  let arr = cid.map(subArr => [...subArr]).reverse();
+  for(let i = 0; i < arr.length; i++) {
+    while(arr[i][1] > 0 && denominations[i] <= amountOwedCopy) {
+      if(amountOwedCopy > 0 && arr[i][1] >= 0) {
+        arr[i][1] -= denominations[i];
+        amountOwedCopy -= denominations[i];
+        amountOwedCopy = Number(amountOwedCopy.toFixed(2));
+      }
+      else {
+        return;
+      }
+    }
+  }
+  if(amountOwedCopy !==0) {
+    return false;
+  }
+  else{
+    return true;
+  }
+}
 
-
+// Calculates the change returned to the customer based on the cash they pay with and the price of the
+// price of the item. Different messages are used to display different outcomes to the user based on price of
+// product, cash available in the drawer(cid) and the amount the user chooses to pay with.
 const CalculateChange = () => {
   let userCash = Number(userInput.value);
-  let cidList = cid.reverse();
-  let totalCidInDrawer = totalCid();
-  let changeDue = [];
-  const price = 1.87;
+  let cidList = [...cid].reverse();
+  let totalCidInDrawer = totalCid(cid);
+  let amountOwed = userCash - price;
+  const amountOwedCopy = amountOwed;
+  cidChangeArrReset();
+
   if(userCash === price) {
-    /* changeDue.push('No change due - customer paid with exact cash'); */
-    console.log('No change due - customer paid with exact cash');
+    const changeStatus = 'No change due - customer paid with exact cash'
+    changeDue.textContent = changeStatus;
     return;
   }
   else if(userCash < price) {
     alert('Customer does not have enough money to purchase the item');
     return;
   }
-  else if(userCash > totalCidInDrawer) {
-    /* changeDue.push('Status: INSUFFICIENT_FUNDS'); */
-    console.log('Status: INSUFFICIENT_FUNDS');
+  else if(amountOwed > totalCidInDrawer || !exactChangePresent()) {
+    const changeStatus = 'Status: INSUFFICIENT_FUNDS';
+    changeDue.textContent = changeStatus;
     return;
   }
-
   else {
-    let amountOwed = userCash - price;
     cidList.forEach((el, index) => {
       while(amountOwed > 0){
         if(el[1] > 0 && !(Number(amountOwed.toFixed(2)) - denominations[index] < 0)) {
+          el[1] = Number(el[1].toFixed(2));
+          amountOwed = Number(amountOwed.toFixed(2));
           amountOwed -= denominations[index];
           el[1] -= denominations[index];
-          changeDue.push(denominations[index]);
-          Number(amountOwed.toFixed(2));
-          cidList[el] -= denominations[index];
+          cidChangeArr[index][1] += denominations[index];
         }
         else {
-          console.log('else condition');
           return;
         }
       }
-    });
-    cidDisplay(cidList.reverse());
-    console.log('This is the amountOwed', amountOwed.toFixed(2));
-    console.log('This is the changeDue array',changeDue);
-    console.log('This is the cidList array',cidList);
-    return amountOwed;  
-  };
+    }); 
+    if(amountOwedCopy === totalCidInDrawer || totalCidInDrawer === 0) {
+      changeDue.innerHTML = "Status: CLOSED";
+    }
 
+    else {
+      changeDue.innerHTML = "Status: OPEN";
+    }
+    cidDisplay(cidList);
+    displayChangeForCustomer(cidChangeArr);
+    return;  
+  };
 };
 
+purchaseBtn.addEventListener('click', CalculateChange);
 
-test.addEventListener('click', CalculateChange);
-
-
-
-
-
+// Updates the HTML to display the change returned to the customer
+const displayChangeForCustomer = (arr) => {
+  arr.forEach((el) => {
+    if(el[1] !== 0) {
+      changeDue.innerHTML += `<br>${el[0]}: $${Number(el[1].toFixed(2))}`;
+    }
+  });
+  return;
+};

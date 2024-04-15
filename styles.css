@@ -33,10 +33,6 @@ main {
     font-size: 40px;
 }
 
-#change-due {
-    
-}
-
 #input-container {
     display:flex;
     flex-direction: column;
