@@ -7,22 +7,7 @@ const test = document.getElementById('test');
 const changeSpans = document.querySelectorAll('.change-amount');
 changeDue.innerHTML = '';
 
-//testing purpose CID and price
-let price = 19.5;
-let cid = [
-  ["PENNY", .01],
-  ["NICKEL", 0],
-  ["DIME", 0],
-  ["QUARTER", 0],
-  ["ONE", 1],
-  ["FIVE", 0],
-  ["TEN", 0],
-  ["TWENTY", 0],
-  ["ONE HUNDRED", 0]
-];
-
-
-/* let price = 1.87;
+let price = 1.87;
 let cid = [
   ["PENNY", 1.01],
   ["NICKEL", 2.05],
@@ -33,18 +18,19 @@ let cid = [
   ["TEN", 20],
   ["TWENTY", 60],
   ["ONE HUNDRED", 100]
-]; */
+];
 
-// A reversed copy of the cid array that will not be modified and used for comparison purposes
-const cidCopy = [...cid].reverse();
 
+// A reversed shallow copy of the cid array that will not be modified and used for comparison purposes
+let cidCopy = [...cid].reverse();
+
+// A reversed deep copy of the cid Array for use in functions without affecting original Array
 const deepCopy = (arr) => {
   return arr.map(subArr => [...subArr]);
 };
+let deepCidCopy = deepCopy(cid).reverse();
 
-const deepCidCopy = deepCopy(cid).reverse();
-
-
+console.log('this is the deepCid Copy fresh',deepCidCopy);
 // The cash value associated with each denomination of money found in the drawer, used for calculations
 let denominations = [100, 20, 10, 5, 1, 0.25, 0.1, 0.05, 0.01];
 
@@ -84,8 +70,6 @@ const priceDisplay = () => {
 };
 document.addEventListener('DOMContentLoaded', priceDisplay);
 
-
-
 // Sums up all available cash in the drawer into one number for comparison purposes
 const totalCid = (arr) => {
   let sumOfCash = arr.reduce((acc, el) => acc + el[1], 0);
@@ -94,87 +78,32 @@ const totalCid = (arr) => {
 };
 totalCid(cid);
 
-/* const exactChangePresent = (arr) => {
-  let userCash = Number(userInput.value);
-  let amountOwed = userCash - price;
-  arr.forEach((el, index) => {
-    if(el[1]!==0) {
-      if(denominations[index] <= amountOwed){
-        if(el[1] >= amountOwed){
-          if(el[1] === amountOwed || denominations[index] === amountOwed){
-            return true;
-          }
-        }
-      }
-    }else{
-      return false;
-    }
-  });
-}; */
-
 const exactChangePresent = (arr) => {
   let checkChangeArr = [];
   let userCash = Number(userInput.value);
   let amountOwedCopy = userCash - price;
   
   for(let i = 0; i < arr.length; i++) {
-    while(arr[i][1] !==0 && denominations[i] <= amountOwedCopy) {
-      if(amountOwedCopy > 0) {
+    while(arr[i][1] > 0 && denominations[i] <= amountOwedCopy) {
+      if(amountOwedCopy > 0 && arr[i][1] >= 0) {
         arr[i][1] -= denominations[i];
         amountOwedCopy -= denominations[i];
         amountOwedCopy = Number(amountOwedCopy.toFixed(2));
-        /* console.log('amountOwed',amountOwed) */
       }
       else {
-        console.log('return');
         return;
       }
     }
   }
   if(amountOwedCopy !==0) {
-    console.log('false')
+    console.log('false hit in exactChangePresent')
     return false;
   }
   else{
-    console.log('true')
+    console.log('true hit in exactChangePresent')
     return true;
   }
 }
-exactChangePresent(deepCidCopy);
-/* const exactChangePresent = (arr) => {
-  let checkChangeArr = [];
-  let userCash = Number(userInput.value);
-  let amountOwed = userCash - price;
-  for(let i = 0; i < arr.length; i++) {
-    if(arr[i][1] === amountOwed) {
-      return true;
-    }
-    else if(arr[i][1] !== 0 && denominations[i] === amountOwed) {
-      return true;
-    }
-    else if(arr[i][1] !== 0 && denominations[i] <= amountOwed){
-      checkChangeArr.push(arr[i][1]);
-      console.log(checkChangeArr);
-    }
-  }
-  for(let i = 0; i < checkChangeArr.length; i++) {
-    while(checkChangeArr[i] > 0 && checkChangeArr[i] !== amountOwed) {
-      checkChangeArr[i] -= denominations[i];
-    }
-    if(checkChangeArr[i] === 0) {
-      return true;
-    }
-    
-  }
-  
-  return false;
-}; */
-
-
-
-
-
-
 
 
 // Calculates the change returned to the customer based on the cash they pay with and the price of the
@@ -191,7 +120,7 @@ const CalculateChange = () => {
 
   if(userCash === price) {
     const changeStatus = 'No change due - customer paid with exact cash'
-    console.log(changeStatus);
+/*     console.log(changeStatus); */
     changeDue.textContent = changeStatus;
     return;
   }
@@ -218,7 +147,7 @@ const CalculateChange = () => {
           cidChangeArr[index][1] += denominations[index];
         }
         else {
-          console.log('else condition');
+/*           console.log('else condition'); */
           return;
         }
       }
@@ -229,20 +158,25 @@ const CalculateChange = () => {
 
     else {
       changeDue.innerHTML = "Status: OPEN";
-      console.log('this is the totalCid in drawer in the else clause',totalCidInDrawer)
+/*       console.log('this is the totalCid in drawer in the else clause',totalCidInDrawer) */
     }
     cidDisplay(cidList);
     displayChangeForCustomer(cidChangeArr);
-    console.log('This is the amountOwed', amountOwed.toFixed(2));
-   /*  console.log('This is the changeDue array',changeDueArr); */
+/*     console.log('This is the amountOwed', amountOwed.toFixed(2));
     console.log('This is the cidList array',cidList);
     console.log('this is the total cid in drawer at the very end', totalCidInDrawer);
-    console.log('this is the cid Change arr for testing', cidChangeArr);
+    console.log('this is the cid Change arr for testing', cidChangeArr); */
     return;  
   };
 };
 
 purchaseBtn.addEventListener('click', CalculateChange);
+purchaseBtn.addEventListener('click', () =>{
+  console.log(changeDue.textContent);
+  console.log('this is the cid',cid);
+  console.log('this is the cidCopy',cidCopy);
+  console.log('this is the deepCidCopy',deepCidCopy);
+});
 
 // Updates the HTML to display the change returned to the customer
 const displayChangeForCustomer = (arr) => {
@@ -253,27 +187,4 @@ const displayChangeForCustomer = (arr) => {
   });
   return;
 };
-
-test.addEventListener('click', () =>{
-/*   console.log(cid.reverse());
-  console.log(cidCopy); */
-  let problem = 0.5 % 0.25;
-  console.log(Number(problem.toFixed(2)));
-})
-
-
-
-
-
-
-
-/* const displayChangeForCustomer = (arr) => {
-  let totalCidInDrawer = totalCid();
-  arr.forEach((el, index) => {
-    if(el[1] !== cidCopy[index][1]) {
-      let result = cidCopy[index][1] - el[1];
-      changeDue.innerHTML += `<br>${el[0]}: $${Number(result.toFixed(2))}`;
-    }
-  });
-  return;
-}; */
+/* console.log(changeDue.textContent); */
