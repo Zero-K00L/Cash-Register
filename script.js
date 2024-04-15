@@ -137,7 +137,6 @@ const CalculateChange = () => {
     if(amountOwedCopy === totalCidInDrawer || totalCidInDrawer === 0) {
       changeDue.innerHTML = "Status: CLOSED";
     }
-
     else {
       changeDue.innerHTML = "Status: OPEN";
     }
