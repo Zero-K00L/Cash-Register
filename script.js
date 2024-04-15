@@ -101,7 +101,6 @@ const CalculateChange = () => {
   let userCash = Number(userInput.value);
   let cidList = [...cid].reverse();
   let totalCidInDrawer = totalCid(cid);
-  let changeDueArr = [];
   let amountOwed = userCash - price;
   const amountOwedCopy = amountOwed;
   cidChangeArrReset();
@@ -128,7 +127,6 @@ const CalculateChange = () => {
           amountOwed = Number(amountOwed.toFixed(2));
           amountOwed -= denominations[index];
           el[1] -= denominations[index];
-          changeDueArr.push(denominations[index]);
           cidChangeArr[index][1] += denominations[index];
         }
         else {
