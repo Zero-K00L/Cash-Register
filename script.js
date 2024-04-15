@@ -78,10 +78,11 @@ const totalCid = (arr) => {
 };
 totalCid(cid);
 
-const exactChangePresent = (arr) => {
+const exactChangePresent = () => {
   let userCash = Number(userInput.value);
   let amountOwedCopy = userCash - price;
-  
+  let arr = cid.map(subArr => [...subArr]).reverse();
+
   for(let i = 0; i < arr.length; i++) {
     while(arr[i][1] > 0 && denominations[i] <= amountOwedCopy) {
       if(amountOwedCopy > 0 && arr[i][1] >= 0) {
@@ -127,7 +128,7 @@ const CalculateChange = () => {
     alert('Customer does not have enough money to purchase the item');
     return;
   }
-  else if(amountOwed > totalCidInDrawer || !exactChangePresent(deepCidCopy)) {
+  else if(amountOwed > totalCidInDrawer || !exactChangePresent()) {
     const changeStatus = 'Status: INSUFFICIENT_FUNDS';
     changeDue.textContent = changeStatus;
     return;
